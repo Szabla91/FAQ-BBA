@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>FAQ BBA - Pełne Sekcje + Wyszukiwanie + Zwijanie</title>
+<style>
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+.container { max-width: 1000px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+h1 { text-align: center; margin-bottom: 20px; color: #333; }
+#searchInput {
+  width: 100%;
+  padding: 12px 20px;
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.section { margin-bottom: 20px; }
+.section input[type="radio"] { display: none; }
+.section-title {
+  font-size: 24px;
+  padding: 15px 20px;
+  cursor: pointer;
+  color: #000;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e0e0e0;
+  transition: background 0.3s ease;
+}
+.admin .section-title { background: rgba(0, 120, 212, 0.75); }
+.kadry .section-title { background: rgba(40, 167, 69, 0.75); }
+.ksiegowosc .section-title { background: rgba(255, 193, 7, 0.75); }
+.ds .section-title { background: rgba(23, 162, 184, 0.75); }
+.dmlk .section-title { background: rgba(111, 66, 193, 0.75); }
+.section-content { max-height: 0; overflow: hidden; background: #f9f9f9; transition: max-height 0.5s ease, padding 0.5s ease; border-radius: 0 0 8px 8px; }
+.section input[type="radio"]:checked ~ .section-content { max-height: 1000px; padding: 20px; }
+.faq-container { width: 100%; }
+.faq-item { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 16px; background: #fff; overflow: hidden; }
+.faq-item input[type="radio"] { display: none; }
+.faq-item label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  background: #f7f7f7;
+  color: #333;
+  border-radius: 8px 8px 0 0;
+}
+.faq-item label:hover { background: #e2e2e2; }
+.faq-item .icon::before { content: "+"; font-size: 24px; transition: transform 0.3s ease; }
+.faq-item input[type="radio"]:checked ~ label .icon::before { content: "-"; }
+.faq-item .content {
+  max-height: 0;
+  overflow: hidden;
+  background: #fafafa;
+  font-size: 16px;
+  padding: 0 20px;
+  transition: max-height 0.5s ease, padding 0.5s ease;
+}
+.faq-item input[type="radio"]:checked ~ .content { max-height: 600px; padding: 20px; }
+p { margin: 0 0 10px; }
+</style>
+<script>
+function searchFAQ() {
+  var input = document.getElementById('searchInput');
+  var filter = input.value.toUpperCase();
+  var sections = document.getElementsByClassName('section');
+  var questions, labels, i, j, txtValue, matchFound;
+
+  for (i = 0; i < sections.length; i++) {
+    questions = sections[i].getElementsByClassName('faq-item');
+    matchFound = false;
+
+    for (j = 0; j < questions.length; j++) {
+      labels = questions[j].getElementsByTagName('label')[0];
+      txtValue = labels.textContent || labels.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        questions[j].style.display = "";
+        matchFound = true;
+      } else {
+        questions[j].style.display = "none";
+      }
+    }
+
+    if (filter !== "") {
+      if (matchFound) {
+        sections[i].style.display = "";
+        sections[i].querySelector('.section-content').style.maxHeight = "1000px";
+      } else {
+        sections[i].style.display = "none";
+      }
+    } else {
+      sections[i].style.display = "";
+      sections[i].querySelector('.section-content').style.maxHeight = null;
+    }
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+<h1>FAQ BBA</h1>
+
+<input type="text" id="searchInput" onkeyup="searchFAQ()" placeholder="Szukaj pytania... 🔍">
+
+<!-- Sekcja Administracja -->
+<div class="section admin">
+  <input type="radio" name="accordion" id="section-admin">
+  <label class="section-title" for="section-admin">📂 Administracja</label>
+  <div class="section-content">
+    <div class="faq-container">
+      <div class="faq-item">
+        <input type="radio" name="faq-admin" id="admin1">
+        <label for="admin1">Jak archiwizować dokumenty?<span class="icon"></span></label>
+        <div class="content">
+          <p>Dokumenty przechowujemy w systemie SharePoint zgodnie z procedurami RODO.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="radio" name="faq-admin" id="admin2">
+        <label for="admin2">Kto ma dostęp do dokumentacji?<span class="icon"></span></label>
+        <div class="content">
+          <p>Dostępy do dokumentacji przyznaje Dział Administracji na wniosek przełożonego.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sekcja Kadry -->
+<div class="section kadry">
+  <input type="radio" name="accordion" id="section-kadry">
+  <label class="section-title" for="section-kadry">👥 Kadry</label>
+  <div class="section-content">
+    <div class="faq-container">
+      <div class="faq-item">
+        <input type="radio" name="faq-kadry" id="kadry1">
+        <label for="kadry1">Jak zgłosić urlop?<span class="icon"></span></label>
+        <div class="content">
+          <p>Urlopy zgłaszamy za pomocą systemu HR lub formularza papierowego dostępnego w kadrach.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="radio" name="faq-kadry" id="kadry2">
+        <label for="kadry2">Jak zgłosić zmianę danych osobowych?<span class="icon"></span></label>
+        <div class="content">
+          <p>Zmianę danych osobowych zgłasza się poprzez kontakt z Działem Kadr, dostarczając odpowiednie dokumenty.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sekcja Księgowość -->
+<div class="section ksiegowosc">
+  <input type="radio" name="accordion" id="section-ksiegowosc">
+  <label class="section-title" for="section-ksiegowosc">🧾 Księgowość</label>
+  <div class="section-content">
+    <div class="faq-container">
+      <div class="faq-item">
+        <input type="radio" name="faq-ksiegowosc" id="ksiegowosc1">
+        <label for="ksiegowosc1">Kiedy wystawiamy faktury?<span class="icon"></span></label>
+        <div class="content">
+          <p>Faktury wystawiamy do 15 dnia miesiąca po realizacji usługi lub dostawy.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="radio" name="faq-ksiegowosc" id="ksiegowosc2">
+        <label for="ksiegowosc2">Jak rozliczamy delegacje?<span class="icon"></span></label>
+        <div class="content">
+          <p>Delegacje rozliczamy w terminie 7 dni od zakończenia podróży służbowej na formularzu dostępnym w Intranecie.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sekcja DS -->
+<div class="section ds">
+  <input type="radio" name="accordion" id="section-ds">
+  <label class="section-title" for="section-ds">📞 Departament Sprzedaży</label>
+  <div class="section-content">
+    <div class="faq-container">
+      <div class="faq-item">
+        <input type="radio" name="faq-ds" id="ds1">
+        <label for="ds1">Jak przygotować ofertę?<span class="icon"></span></label>
+        <div class="content">
+          <p>Oferty przygotowujemy na podstawie wytycznych klienta oraz wewnętrznych szablonów.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="radio" name="faq-ds" id="ds2">
+        <label for="ds2">Jak zgłosić nowego klienta?<span class="icon"></span></label>
+        <div class="content">
+          <p>Nowego klienta należy wprowadzić do systemu CRM oraz przesłać zgłoszenie do Działu Sprzedaży.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sekcja DMLK -->
+<div class="section dmlk">
+  <input type="radio" name="accordion" id="section-dmlk">
+  <label class="section-title" for="section-dmlk">🚚 Dział Operacyjny DMLK</label>
+  <div class="section-content">
+    <div class="faq-container">
+      <div class="faq-item">
+        <input type="radio" name="faq-dmlk" id="dmlk1">
+        <label for="dmlk1">Jakie dokumenty są wymagane do odprawy?<span class="icon"></span></label>
+        <div class="content">
+          <p>Wymagane są: faktura handlowa, lista pakowa i dokument przewozowy (CMR, SMGS, AWB).</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="radio" name="faq-dmlk" id="dmlk2">
+        <label for="dmlk2">Jakie są czasy dostaw kolejowych z Chin?<span class="icon"></span></label>
+        <div class="content">
+          <p>Czas dostawy wynosi średnio od 12 do 18 dni w zależności od wybranego terminala i przewoźnika.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</body>
+</html>
